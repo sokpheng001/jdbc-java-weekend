@@ -15,6 +15,7 @@ public class Application {
                 user.getEmail(),
                 user.getDeleted()
         );
+        System.out.println("Additional course");
         System.out.println(responseDto);
     }
 }
