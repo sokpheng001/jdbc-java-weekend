@@ -3,6 +3,7 @@ package repository;
 import model.CreateUserReq;
 import model.UpdateUserReq;
 import model.User;
+import utils.DBConfig;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,15 +11,12 @@ import java.util.List;
 import java.util.Random;
 
 public class UserRepositoryImpl implements UserRepository{
-    private final String url = "jdbc:postgresql://localhost:5432/media_db";
-    private final String userName = "postgres";
-    private final String password = "123";
+
     @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         try{
-            Connection connection =
-                    DriverManager.getConnection(url,userName,password);
+            Connection connection = DBConfig.getDbConfig();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("""
 SELECT * FROM users WHERE is_deleted = false""");
@@ -43,7 +41,7 @@ SELECT * FROM users WHERE is_deleted = false""");
     @Override
     public User getUserById(int id) {
         try{
-            Connection connection = DriverManager.getConnection(url,userName,password);
+            Connection connection = DBConfig.getDbConfig();
             PreparedStatement preparedStatement = connection.prepareStatement("""
 SELECT * FROM users where id = ?""");
             preparedStatement.setInt(1,id);
@@ -66,7 +64,7 @@ SELECT * FROM users where id = ?""");
     @Override
     public User insertUser(CreateUserReq createUserReq) {
         try{
-            Connection connection = DriverManager.getConnection(url,userName,password);
+            Connection connection = DBConfig.getDbConfig();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     """
 INSERT INTO users(id, user_name, email, password, is_deleted)
@@ -94,7 +92,7 @@ VALUES (?,?,?,?,?)"""
     @Override
     public User updateUserById(int id, UpdateUserReq updateUserReq) {
         try{
-            Connection connection = DriverManager.getConnection(url,userName,password);
+            Connection connection = DBConfig.getDbConfig();
             PreparedStatement pre = connection.prepareStatement("""
 UPDATE users
 SET user_name = ?,
@@ -123,7 +121,7 @@ WHERE id = ?""");
     @Override
     public Integer deleteUserById(int id) {
         try{
-            Connection connection = DriverManager.getConnection(url,userName,password);
+            Connection connection = DBConfig.getDbConfig();
             PreparedStatement preparedStatement = connection.prepareStatement("""
 DELETE FROM users WHERE id = ?""");
             preparedStatement.setInt(1,id);
