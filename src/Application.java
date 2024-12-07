@@ -1,9 +1,7 @@
-import repository.UserRepositoryImpl;
+import view.UI;
 
 public class Application {
     public static void main(String[] args) {
-        new UserRepositoryImpl()
-                .getAllUsers()
-                .forEach(System.out::println);
+        UI.home();
     }
 }
